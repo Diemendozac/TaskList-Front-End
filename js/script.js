@@ -11,7 +11,8 @@ let formLogIn = document.querySelector(".log-in"),
   passFieldLogIn = formLogIn.querySelector(".create-password"),
   passInputLogIn = passFieldLogIn.querySelector(".insert-password"),
   SignInField = formLogIn.querySelector(".field");
-const loginUrl = "https://localhost:8081/api/books";
+const loginUrl = "http://localhost:8081/api/books";
+const signUpUrl = "http://localhost:8081/api/books";
 
 
 document.querySelector(".login-container").classList.add("active");
@@ -76,7 +77,8 @@ formSignUp.addEventListener("submit", (e) => {
     !passFieldSignUp.classList.contains("invalid") &&
     !cPassField.classList.contains("invalid")
   ) {
-    location.href = formSignUp.getAttribute("action");
+    inputToJsonConverter(formSignUp)
+    postRequest(inputToJsonConverter(formSignUp), signUpUrl);
   }
 });
 
@@ -94,15 +96,33 @@ formLogIn.addEventListener("submit", (e) => {
     !passFieldLogIn.classList.contains("invalid")
   ) {
     //location.href = formLogIn.getAttribute("action");
-    inputToJsonConverter(formLogIn);
+    inputToJsonConverter(formLogIn)
+    postRequest(inputToJsonConverter(formLogIn), loginUrl);
   }
 });
 
 function inputToJsonConverter(form){
-  
+  var formData = new FormData();
+  var formElements = form.querySelectorAll("div > .input-field > input");
+
+  for(var i = 0; i < 2; i++){
+    var fieldName = formElements[i].name;
+    var fieldValue = formElements[i].value;
+    formData.append(fieldName, fieldValue);
+  }
+
+  var jsonObject = {};
+
+  formData.forEach(function(value, key) {
+    jsonObject[key] = value;
+  });
+
+  var jsonData = JSON.stringify(jsonObject);
+  return jsonData;
+
 }
 
-function loginGetRequest(jsonData, endPoint) {
+function postRequest(jsonData, endPoint) {
   fetch(endPoint, {
     method: 'POST',
     headers: {
