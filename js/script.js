@@ -1,20 +1,28 @@
-const form = document.querySelector(".sign-up"),
-  emailField = form.querySelector(".email-field"),
-  emailInput = emailField.querySelector(".email"),
-  passField = form.querySelector(".create-password"),
-  passInput = passField.querySelector(".password"),
-  cPassField = form.querySelector(".confirm-password"),
+let formSignUp = document.querySelector(".sign-up"),
+  emailFieldSignUp = formSignUp.querySelector(".email-field"),
+  emailInputSignUp = emailFieldSignUp.querySelector(".email"),
+  passFieldSignUp = formSignUp.querySelector(".create-password"),
+  passInputSignUp = passFieldSignUp.querySelector(".password"),
+  cPassField = formSignUp.querySelector(".confirm-password"),
   cPassInput = cPassField.querySelector(".cPassword");
+let formLogIn = document.querySelector(".log-in"),
+  emailFieldLogIn = formLogIn.querySelector(".email-field"),
+  emailInputLogIn = emailFieldLogIn.querySelector(".email"),
+  passFieldLogIn = formLogIn.querySelector(".create-password"),
+  passInputLogIn = passFieldLogIn.querySelector(".insert-password"),
+  SignInField = formLogIn.querySelector(".field");
+const loginUrl = "https://localhost:8081/api/books";
 
-  document.querySelector(".login-container").classList.add("active");
+
+document.querySelector(".login-container").classList.add("active");
 
 // Email Validtion
-function checkEmail() {
+function checkEmail(fieldElement, element) {
   const emaiPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-  if (!emailInput.value.match(emaiPattern)) {
-    return emailField.classList.add("invalid"); //adding invalid class if email value do not mathced with email pattern
+  if (!element.value.match(emaiPattern)) {
+    return fieldElement.classList.add("invalid"); //adding invalid class if email value do not mathced with email pattern
   }
-  emailField.classList.remove("invalid"); //removing invalid class if email value matched with emaiPattern
+  fieldElement.classList.remove("invalid"); //removing invalid class if email value matched with emaiPattern
 }
 
 // Hide and show password
@@ -33,58 +41,91 @@ eyeIcons.forEach((eyeIcon) => {
 });
 
 // Password Validation
-function createPass() {
+function validatePass(fieldElement, element) {
   const passPattern =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-  if (!passInput.value.match(passPattern)) {
-    return passField.classList.add("invalid"); //adding invalid class if password input value do not match with passPattern
+  if (!element.value.match(passPattern)) {
+    return fieldElement.classList.add("invalid"); //adding invalid class if password input value do not match with passPattern
   }
-  passField.classList.remove("invalid"); //removing invalid class if password input value matched with passPattern
+  fieldElement.classList.remove("invalid"); //removing invalid class if password input value matched with passPattern
 }
 
 // Confirm Password Validtion
-function confirmPass() {
-  if (passInput.value !== cPassInput.value || cPassInput.value === "") {
-    return cPassField.classList.add("invalid");
+function confirmPass(fieldElement, element) {
+  if (element.value !== element.value || cPassInput.value === "") {
+    return fieldElement.classList.add("invalid");
   }
   cPassField.classList.remove("invalid");
 }
 
 // Calling Funtion on Form Sumbit
-form.addEventListener("submit", (e) => {
+formSignUp.addEventListener("submit", (e) => {
   e.preventDefault(); //preventing form submitting
-  checkEmail();
-  createPass();
-  confirmPass();
+  checkEmail(emailFieldSignUp, emailInputSignUp);
+  validatePass(passFieldSignUp, passInputSignUp);
+  confirmPass(cPassField, cPassInput);
 
   //calling function on key up
-  emailInput.addEventListener("keyup", checkEmail);
-  passInput.addEventListener("keyup", createPass);
+  emailInputSignUp.addEventListener("keyup", checkEmail);
+  passInputSignUp.addEventListener("keyup", validatePass);
   cPassInput.addEventListener("keyup", confirmPass);
 
   if (
-    !emailField.classList.contains("invalid") &&
-    !passField.classList.contains("invalid") &&
+    !emailFieldSignUp.classList.contains("invalid") &&
+    !passFieldSignUp.classList.contains("invalid") &&
     !cPassField.classList.contains("invalid")
   ) {
-    location.href = form.getAttribute("action");
+    location.href = formSignUp.getAttribute("action");
   }
 });
+
+formLogIn.addEventListener("submit", (e) => {
+  e.preventDefault(); //preventing form submitting
+  checkEmail(emailFieldLogIn, emailInputLogIn);
+  validatePass(passFieldLogIn, passInputLogIn);
+
+  //calling function on key up
+  emailInputLogIn.addEventListener("keyup", checkEmail);
+  passInputLogIn.addEventListener("keyup", validatePass);
+
+  if (
+    !emailFieldLogIn.classList.contains("invalid") &&
+    !passFieldLogIn.classList.contains("invalid")
+  ) {
+    //location.href = formLogIn.getAttribute("action");
+    inputToJsonConverter(formLogIn);
+  }
+});
+
+function inputToJsonConverter(form){
+  
+}
+
+function loginGetRequest(jsonData, endPoint) {
+  fetch(endPoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json'
+    },
+    body: jsonData
+  }).then(res => res.json())
+  .then(result => console.log(result))
+  .catch(err => console.log(err))
+}
+
+
 
 document.querySelector("#sign-up-a").addEventListener("click", function () {
   document.querySelector(".login-container").classList.remove("active");
   document.querySelector(".signup-container").classList.add("active");
-  console.log("Ok desde function1");
+  emailFieldLogIn.classList.remove("invalid");
+  passFieldLogIn.classList.remove("invalid");
 });
-document
-  .querySelector("#log-in-a")
-  .addEventListener("click", function () {
-    document.querySelector(".signup-container").classList.remove("active");
-    document.querySelector(".login-container").classList.add("active");
-    emailField.classList.remove("invalid");
-    passField.classList.remove("invalid");
-    cPassField.classList.remove("invalid");
-    
-  });
-
+document.querySelector("#log-in-a").addEventListener("click", function () {
+  document.querySelector(".signup-container").classList.remove("active");
+  document.querySelector(".login-container").classList.add("active");
+  emailFieldSignUp.classList.remove("invalid");
+  passFieldSignUp.classList.remove("invalid");
+  cPassField.classList.remove("invalid");
+});
