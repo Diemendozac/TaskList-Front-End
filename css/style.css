@@ -13,7 +13,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #4070f4;
+  background: #000000;
 }
 .signup-container, .login-container {
   position:absolute;
@@ -76,7 +76,7 @@ form .input-field {
   display: flex;
   align-items: center;
   margin-top: 6px;
-  color: #d93025;
+  color: #b00020;
   font-size: 13px;
   display: none;
 }
@@ -87,6 +87,11 @@ form .input-field {
   margin-right: 6px;
   font-size: 15px;
 }
+
+.login-container .password-error {
+  margin-bottom: 2px;
+}
+
 .create-password .error {
   align-items: flex-start;
 }
@@ -100,12 +105,12 @@ form .input-field {
   color: #fff;
   font-size: 16px;
   font-weight: 400;
-  background-color: #4070f4;
+  background-color: #222;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 .button input:hover {
-  background-color: #0e4bf1;
+  background-color: #6200EE ;
 }
 
 
