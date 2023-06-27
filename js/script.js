@@ -1,151 +1,105 @@
-let formSignUp = document.querySelector(".sign-up"),
-  emailFieldSignUp = formSignUp.querySelector(".email-field"),
-  emailInputSignUp = emailFieldSignUp.querySelector(".email"),
-  passFieldSignUp = formSignUp.querySelector(".create-password"),
-  passInputSignUp = passFieldSignUp.querySelector(".password"),
-  cPassField = formSignUp.querySelector(".confirm-password"),
-  cPassInput = cPassField.querySelector(".cPassword");
-let formLogIn = document.querySelector(".log-in"),
-  emailFieldLogIn = formLogIn.querySelector(".email-field"),
-  emailInputLogIn = emailFieldLogIn.querySelector(".email"),
-  passFieldLogIn = formLogIn.querySelector(".create-password"),
-  passInputLogIn = passFieldLogIn.querySelector(".insert-password"),
-  SignInField = formLogIn.querySelector(".field");
-const loginUrl = "http://localhost:8081/api/books";
-const signUpUrl = "http://localhost:8081/api/books";
+const addBox = document.querySelector(".add-box"),
+popupBox = document.querySelector(".popup-box"),
+popupTitle = popupBox.querySelector("header p"),
+closeIcon = popupBox.querySelector("header i"),
+titleTag = popupBox.querySelector("input"),
+descTag = popupBox.querySelector("textarea"),
+addBtn = popupBox.querySelector("button");
 
+const months = ["January", "February", "March", "April", "May", "June", "July",
+              "August", "September", "October", "November", "December"];
+const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+let isUpdate = false, updateId;
 
-document.querySelector(".login-container").classList.add("active");
+addBox.addEventListener("click", () => {
+    popupTitle.innerText = "Add a new Note";
+    addBtn.innerText = "Add Note";
+    popupBox.classList.add("show");
+    document.querySelector("body").style.overflow = "hidden";
+    if(window.innerWidth > 660) titleTag.focus();
+});
 
-// Email Validtion
-function checkEmail(fieldElement, element) {
-  const emaiPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-  if (!element.value.match(emaiPattern)) {
-    return fieldElement.classList.add("invalid"); //adding invalid class if email value do not mathced with email pattern
-  }
-  fieldElement.classList.remove("invalid"); //removing invalid class if email value matched with emaiPattern
+closeIcon.addEventListener("click", () => {
+    isUpdate = false;
+    titleTag.value = descTag.value = "";
+    popupBox.classList.remove("show");
+    document.querySelector("body").style.overflow = "auto";
+});
+
+function showNotes() {
+    if(!notes) return;
+    document.querySelectorAll(".note").forEach(li => li.remove());
+    notes.forEach((note, id) => {
+        let filterDesc = note.description.replaceAll("\n", '<br/>');
+        let liTag = `<li class="note">
+                        <div class="details">
+                            <p>${note.title}</p>
+                            <span>${filterDesc}</span>
+                        </div>
+                        <div class="bottom-content">
+                            <span>${note.date}</span>
+                            <div class="settings">
+                                <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
+                                <ul class="menu">
+                                    <li onclick="updateNote(${id}, '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
+                                    <li onclick="deleteNote(${id})"><i class="uil uil-trash"></i>Delete</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>`;
+        addBox.insertAdjacentHTML("afterend", liTag);
+    });
+}
+showNotes();
+
+function showMenu(elem) {
+    elem.parentElement.classList.add("show");
+    document.addEventListener("click", e => {
+        if(e.target.tagName != "I" || e.target != elem) {
+            elem.parentElement.classList.remove("show");
+        }
+    });
 }
 
-// Hide and show password
-const eyeIcons = document.querySelectorAll(".show-hide");
+function deleteNote(noteId) {
+    let confirmDel = confirm("Are you sure you want to delete this note?");
+    if(!confirmDel) return;
+    notes.splice(noteId, 1);
+    localStorage.setItem("notes", JSON.stringify(notes));
+    showNotes();
+}
 
-eyeIcons.forEach((eyeIcon) => {
-  eyeIcon.addEventListener("click", () => {
-    const pInput = eyeIcon.parentElement.querySelector("input"); //getting parent element of eye icon and selecting the password input
-    if (pInput.type === "password") {
-      eyeIcon.classList.replace("bx-hide", "bx-show");
-      return (pInput.type = "text");
+function updateNote(noteId, title, filterDesc) {
+    let description = filterDesc.replaceAll('<br/>', '\r\n');
+    updateId = noteId;
+    isUpdate = true;
+    addBox.click();
+    titleTag.value = title;
+    descTag.value = description;
+    popupTitle.innerText = "Update a Note";
+    addBtn.innerText = "Update Note";
+}
+
+addBtn.addEventListener("click", e => {
+    e.preventDefault();
+    let title = titleTag.value.trim(),
+    description = descTag.value.trim();
+
+    if(title || description) {
+        let currentDate = new Date(),
+        month = months[currentDate.getMonth()],
+        day = currentDate.getDate(),
+        year = currentDate.getFullYear();
+
+        let noteInfo = {title, description, date: `${month} ${day}, ${year}`}
+        if(!isUpdate) {
+            notes.push(noteInfo);
+        } else {
+            isUpdate = false;
+            notes[updateId] = noteInfo;
+        }
+        localStorage.setItem("notes", JSON.stringify(notes));
+        showNotes();
+        closeIcon.click();
     }
-    eyeIcon.classList.replace("bx-show", "bx-hide");
-    pInput.type = "password";
-  });
-});
-
-// Password Validation
-function validatePass(fieldElement, element) {
-  const passPattern =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-  if (!element.value.match(passPattern)) {
-    return fieldElement.classList.add("invalid"); //adding invalid class if password input value do not match with passPattern
-  }
-  fieldElement.classList.remove("invalid"); //removing invalid class if password input value matched with passPattern
-}
-
-// Confirm Password Validtion
-function confirmPass(fieldElement, element) {
-  if (element.value !== element.value || cPassInput.value === "") {
-    return fieldElement.classList.add("invalid");
-  }
-  cPassField.classList.remove("invalid");
-}
-
-// Calling Funtion on Form Sumbit
-formSignUp.addEventListener("submit", (e) => {
-  e.preventDefault(); //preventing form submitting
-  checkEmail(emailFieldSignUp, emailInputSignUp);
-  validatePass(passFieldSignUp, passInputSignUp);
-  confirmPass(cPassField, cPassInput);
-
-  //calling function on key up
-  emailInputSignUp.addEventListener("keyup", checkEmail);
-  passInputSignUp.addEventListener("keyup", validatePass);
-  cPassInput.addEventListener("keyup", confirmPass);
-
-  if (
-    !emailFieldSignUp.classList.contains("invalid") &&
-    !passFieldSignUp.classList.contains("invalid") &&
-    !cPassField.classList.contains("invalid")
-  ) {
-    inputToJsonConverter(formSignUp)
-    postRequest(inputToJsonConverter(formSignUp), signUpUrl);
-  }
-});
-
-formLogIn.addEventListener("submit", (e) => {
-  e.preventDefault(); //preventing form submitting
-  checkEmail(emailFieldLogIn, emailInputLogIn);
-  validatePass(passFieldLogIn, passInputLogIn);
-
-  //calling function on key up
-  emailInputLogIn.addEventListener("keyup", checkEmail);
-  passInputLogIn.addEventListener("keyup", validatePass);
-
-  if (
-    !emailFieldLogIn.classList.contains("invalid") &&
-    !passFieldLogIn.classList.contains("invalid")
-  ) {
-    //location.href = formLogIn.getAttribute("action");
-    inputToJsonConverter(formLogIn)
-    postRequest(inputToJsonConverter(formLogIn), loginUrl);
-  }
-});
-
-function inputToJsonConverter(form){
-  var formData = new FormData();
-  var formElements = form.querySelectorAll("div > .input-field > input");
-
-  for(var i = 0; i < 2; i++){
-    var fieldName = formElements[i].name;
-    var fieldValue = formElements[i].value;
-    formData.append(fieldName, fieldValue);
-  }
-
-  var jsonObject = {};
-
-  formData.forEach(function(value, key) {
-    jsonObject[key] = value;
-  });
-
-  var jsonData = JSON.stringify(jsonObject);
-  return jsonData;
-
-}
-
-function postRequest(jsonData, endPoint) {
-  fetch(endPoint, {
-    method: 'POST',
-    headers: {
-      'Content-Type' : 'application/json'
-    },
-    body: jsonData
-  }).then(res => res.json())
-  .then(result => console.log(result))
-  .catch(err => console.log(err))
-}
-
-
-
-document.querySelector("#sign-up-a").addEventListener("click", function () {
-  document.querySelector(".login-container").classList.remove("active");
-  document.querySelector(".signup-container").classList.add("active");
-  emailFieldLogIn.classList.remove("invalid");
-  passFieldLogIn.classList.remove("invalid");
-});
-document.querySelector("#log-in-a").addEventListener("click", function () {
-  document.querySelector(".signup-container").classList.remove("active");
-  document.querySelector(".login-container").classList.add("active");
-  emailFieldSignUp.classList.remove("invalid");
-  passFieldSignUp.classList.remove("invalid");
-  cPassField.classList.remove("invalid");
 });

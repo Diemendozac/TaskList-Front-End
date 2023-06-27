@@ -1,0 +1,122 @@
+.headerPrincipal .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerPrincipal-nav {
+  display: flex;
+}
+
+.videoSobre .container {
+  display: flex;
+}
+
+.videoSobre .videoSobre-sobre {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.videoSobre .videoSobre-video {
+  flex-grow: 2;
+  flex-shrink: 2;
+}
+
+.videoSobre .videoSobre-sobre-list {
+  flex-grow: 2;
+}
+
+.rodapePrincipal-patrocinadores .container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rodapePrincipal-patrocinadores-list {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 70%;
+  margin-right: 5%;
+}
+
+.rodapePrincipal-contatoForm {
+  width: 25%;
+}
+.rodapePrincipal-contatoForm-fieldset {
+  display: flex;
+  justify-content: space-between;
+}
+
+.rodapePrincipal-navMap-list {
+  display: flex;
+  flex-direction: column;
+  height: 260px;
+  flex-wrap: wrap;
+}
+
+.contenidoPrincipal-cursos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contenidoPrincipal-cursos-link {
+  display: flex;
+  width: 23%;
+}
+
+/*Responsive Area*/
+
+@media (max-width: 768px) {
+  .headerPrincipal .container {
+    flex-direction: column;
+  }
+
+  .headerPrincipal-nav {
+    flex-direction: column;
+    align-items: initial;
+    text-align: center;
+    width: 100%;
+  }
+
+  .contenidoPrincipal-cursos {
+    flex-direction: column;
+  }
+
+  .contenidoPrincipal-cursos-link {
+    width: 100%;
+  }
+
+  .rodapePrincipal-navMap-list {
+    height: auto;
+    flex-wrap: nowrap;
+  }
+
+  .videoSobre .container {
+    flex-direction: column;
+  }
+
+  .rodapePrincipal-patrocinadores .container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .rodapePrincipal-patrocinadores-list {
+    align-items: center;
+    width: 100%;
+    margin: 0%;
+  }
+
+  .rodapePrincipal-contatoForm {
+    width: 100%;
+  }
+
+  .rodapePrincipal-contatoForm-fieldset {
+    justify-content: center;
+  }
+
+  .headerPrincipal-nav-link-app {
+    order: -1;
+  }
+}
