@@ -6,6 +6,7 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
+
 body{
   background: #fff;
 }
@@ -62,20 +63,25 @@ body{
   overflow-y: auto;
 }
 .note .details::-webkit-scrollbar,
-.popup textarea::-webkit-scrollbar{
-  width: 0;
+.popup textarea::-webkit-scrollbar,
+.content::-webkit-scrollbar{
+  width: 5px;
+  opacity: 0;
 }
 .note .details:hover::-webkit-scrollbar,
-.popup textarea:hover::-webkit-scrollbar{
+.popup textarea:hover::-webkit-scrollbar,
+.content:hover::-webkit-scrollbar{
   width: 5px;
 }
 .note .details:hover::-webkit-scrollbar-track,
-.popup textarea:hover::-webkit-scrollbar-track{
+.popup textarea:hover::-webkit-scrollbar-track,
+.content:hover::-webkit-scrollbar-track{
   background: #f1f1f1;
   border-radius: 25px;
 }
 .note .details:hover::-webkit-scrollbar-thumb,
-.popup textarea:hover::-webkit-scrollbar-thumb{
+.popup textarea:hover::-webkit-scrollbar-thumb,
+.content:hover::-webkit-scrollbar-thumb{
   background: #e6e6e6;
   border-radius: 25px;
 }
@@ -177,6 +183,7 @@ body{
   background: #fff;
   width: calc(100% - 15px);
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  overflow-y: scroll;
 }
 .content header{
   padding: 15px 25px;
@@ -215,7 +222,7 @@ form :where(input, textarea):focus{
   box-shadow: 0 2px 4px rgba(0,0,0,0.11);
 }
 form .row textarea{
-  height: 150px;
+  height: 75px;
   resize: none;
   padding: 8px 15px;
 }
@@ -244,3 +251,4 @@ form button{
     font-size: 17px;
   }
 }
+

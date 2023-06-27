@@ -44,19 +44,23 @@
 						<form action="#">
 						  <div class="row title">
 							<label>Title</label>
-							<input type="text" spellcheck="false">
+							<input type="text" spellcheck="false" required>
 						  </div>
 						  <div class="row description">
 							<label>Description</label>
 							<textarea spellcheck="false"></textarea>
 						  </div>
-						  <div class="due date">
-							<label for="start">Start date:</label>
+						  <div class="row duedate">
+							<label for="start">Start Date:</label>
 								<input type="date" id="due-date-field" name="trip-start"
 								value="2018-07-22"
-								min="2018-01-01" max="2018-12-31">
+								min="2023-01-01" max="2023-05-05">
 						  </div>
-						  <button></button>
+						  <div class="row time">
+							<label for="start">Specified Time:</label>
+								<input type="time">
+						  </div>
+						  <button type="submit"></button>
 						</form>
 					  </div>
 					</div>
@@ -68,7 +72,7 @@
 					</li>
 				  </div>
 			  
-				  <script src="/js/script.js"></script>
+				  <script src="./js/script.js"></script>
 			</nav>
 		</div>
 
