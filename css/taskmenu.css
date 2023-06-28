@@ -228,7 +228,7 @@ form .row label{
   margin-bottom: 6px;
 }
 form :where(input, textarea, select){
-  height: 50px;
+  height: 40px;
   width: 100%;
   outline: none;
   font-size: 17px;
