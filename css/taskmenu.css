@@ -68,6 +68,22 @@ body{
   width: 5px;
   opacity: 0;
 }
+
+.daytime, .relevance-category {
+  display: flex;
+}
+
+#category-container {
+  width: 120%;
+}
+
+#relevance-field {
+  width: 100%;
+}
+
+#due-date-field, #time-field, #category-field, #relevance-field {
+  width: 90%;
+}
 .note .details:hover::-webkit-scrollbar,
 .popup textarea:hover::-webkit-scrollbar,
 .content:hover::-webkit-scrollbar{
@@ -85,6 +101,7 @@ body{
   background: #e6e6e6;
   border-radius: 25px;
 }
+
 .note p{
   font-size: 22px;
   font-weight: 500;
@@ -203,13 +220,14 @@ body{
 }
 .content form .row{
   margin-bottom: 20px;
+  width: 100%;
 }
 form .row label{
   font-size: 18px;
   display: block;
   margin-bottom: 6px;
 }
-form :where(input, textarea){
+form :where(input, textarea, select){
   height: 50px;
   width: 100%;
   outline: none;

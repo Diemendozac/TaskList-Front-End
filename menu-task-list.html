@@ -1,149 +1,315 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <!-- saved from url=(0014)about:internet -->
-<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Task List</title>
-	<link rel="stylesheet" href="./css/reset.css">
-	<link rel="stylesheet" href="./css/flexbox.css">
-	<link rel="stylesheet" href="./css/taskmenu.css">
-	<link rel="stylesheet" href="./css/stylemenu.css">
-	<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-<style type="text/css" id="operaUserStyle"></style></head>
-<body>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-	<header class="headerPrincipal">
-		<div class="container">
-			<h1 class="headerPrincipal-titulo">
-				<a href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Task-List</a>
-			</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task List</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/flexbox.css" />
+    <link rel="stylesheet" href="./css/taskmenu.css" />
+    <link rel="stylesheet" href="./css/stylemenu.css" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <style type="text/css" id="operaUserStyle"></style>
+  </head>
+  <body>
+    <header class="headerPrincipal">
+      <div class="container">
+        <h1 class="headerPrincipal-titulo">
+          <a
+            href="#"
+            >Task-List</a
+          >
+        </h1>
 
-			<nav class="headerPrincipal-nav">
-				<a class="headerPrincipal-nav-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Home</a>
-				<a class="headerPrincipal-nav-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Tasks</a>
-				<a class="headerPrincipal-nav-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Categories</a>
-				<a class="headerPrincipal-nav-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Reports</a>
-				<a class="headerPrincipal-nav-link headerPrincipal-nav-link-app" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">About Us</a>
-			</nav>
-		</div>
+        <nav class="headerPrincipal-nav">
+          <a
+            class="headerPrincipal-nav-link"
+            href="#"
+            >Home</a
+          >
+          <a
+            class="headerPrincipal-nav-link"
+            href="#"
+            >Tasks</a
+          >
+          <a
+            class="headerPrincipal-nav-link"
+            href="#"
+            >Categories</a
+          >
+          <a
+            class="headerPrincipal-nav-link"
+            href="#"
+            >Reports</a
+          >
+          <a
+            class="headerPrincipal-nav-link headerPrincipal-nav-link-app"
+            href="#"
+            >About Us</a
+          >
+        </nav>
+      </div>
+    </header>
 
-	</header>
+    <main class="contenidoPrincipal">
+      <div class="container">
+        <h2 class="subtitulo">Your Tasks</h2>
 
-	<main class="contenidoPrincipal">
-		<div class="container">
-			<h2 class="subtitulo">Your Tasks</h2>
+        <nav>
+          <div class="popup-box">
+            <div class="popup">
+              <div class="content">
+                <header>
+                  <p></p>
+                  <i class="uil uil-times"></i>
+                </header>
+                <form action="#">
+                  <div class="row title">
+                    <label>Title</label>
+                    <input type="text" spellcheck="false" required />
+                  </div>
+                  <div class="row description">
+                    <label>Description</label>
+                    <textarea spellcheck="false"></textarea>
+                  </div>
+                  <div class="daytime">
+                    <div class="row duedate">
+                      <label for="start">Start Date:</label>
+                      <input
+                        type="date"
+                        id="due-date-field"
+                        name="trip-start"
+                        value="2018-07-22"
+                        min="2023-01-01"
+                        max="2023-05-05"
+                      />
+                    </div>
+                    <div class="row time">
+                      <label for="start">Specified Time:</label>
+                      <input id="time-field" type="time" />
+                    </div>
+                  </div>
+                  <div class="relevance-category">
+                    <div id="category-container" class="row category">
+                      <label for="Category">Category</label>
+                      <select id="category-field" name="Category">
+                        <option value="None">NONE</option>
+                      </select>
+                    </div>
+                    <div class="row relevance">
+                      <label for="start">Relevance</label>
+                      <select id="relevance-field" style="width: 100%;" name="Relevance">
+                        <option value="NONE">NONE</option>
+                        <option value="LOW">LOW</option>
+                        <option value="MEDIUM">MEDIUM</option>
+                        <option value="HIGH">HIGH</option>
+                      </select>
+                    </div>
+                  </div>
+                    <button type="submit"></button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="wrapper">
+            <li class="add-box">
+              <div class="icon"><i class="uil uil-plus"></i></div>
+              <p>Add new task</p>
+            </li>
+          </div>
 
-			<nav>
-				<div class="popup-box">
-					<div class="popup">
-					  <div class="content">
-						<header>
-						  <p></p>
-						  <i class="uil uil-times"></i>
-						</header>
-						<form action="#">
-						  <div class="row title">
-							<label>Title</label>
-							<input type="text" spellcheck="false" required>
-						  </div>
-						  <div class="row description">
-							<label>Description</label>
-							<textarea spellcheck="false"></textarea>
-						  </div>
-						  <div class="row duedate">
-							<label for="start">Start Date:</label>
-								<input type="date" id="due-date-field" name="trip-start"
-								value="2018-07-22"
-								min="2023-01-01" max="2023-05-05">
-						  </div>
-						  <div class="row time">
-							<label for="start">Specified Time:</label>
-								<input type="time">
-						  </div>
-						  <button type="submit"></button>
-						</form>
-					  </div>
-					</div>
-				  </div>
-				  <div class="wrapper">
-					<li class="add-box">
-					  <div class="icon"><i class="uil uil-plus"></i></div>
-					  <p>Add new task</p>
-					</li>
-				  </div>
-			  
-				  <script src="./js/script.js"></script>
-			</nav>
-		</div>
+          <script src="./js/script.js"></script>
+        </nav>
+      </div>
+    </main>
 
-		
+    <footer class="rodapePrincipal">
+      <div class="container">
+        <section class="rodapePrinnavMapcipal">
+          <h3 class="subtitulo">User Guide</h3>
+          <nav class="rodapePrincipal-navMap-list">
+            <h4 class="navmap-list-title navmap-list-title-backend">Tasks</h4>
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Java</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >PHP</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Pascal</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Scala</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Python</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Java Web</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Assembly</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Lógica de programación</a
+            >
 
-	</main>
+            <h4 class="navmap-list-title navmap-list-title-frontend">
+              Categories
+            </h4>
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Flexbox</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Desarrollo Web</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Javascript</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >AngularJS</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >ReactJS</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Polymer</a
+            >
 
-	<footer class="rodapePrincipal">
-		<div class="container">
+            <h4 class="navmap-list-title navmap-list-title-framework">
+              Productivity Reports
+            </h4>
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Ruby on Rails</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >VRaptor</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >SpringMVC</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >NodeJS</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Django</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Bootstrap3</a
+            >
 
-			<section class="rodapePrinnavMapcipal">
-				<h3 class="subtitulo">User Guide</h3>
-				<nav class="rodapePrincipal-navMap-list">
+            <h4 class="navmap-list-title navmap-list-title-bancoDeDados">
+              User settings
+            </h4>
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >MySQL</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >MariaDB</a
+            >
+            <a
+              class="rodapePrincipal-navMap-link"
+              href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >Postegres</a
+            >
+          </nav>
+        </section>
+      </div>
 
-					<h4 class="navmap-list-title navmap-list-title-backend">Tasks</h4>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Java</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">PHP</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Pascal</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Scala</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Python</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Java Web</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Assembly</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Lógica de programación</a>
-
-					<h4 class="navmap-list-title navmap-list-title-frontend">Categories</h4>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Flexbox</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Desarrollo Web</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Javascript</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">AngularJS</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">ReactJS</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Polymer</a>
-					
-					<h4 class="navmap-list-title navmap-list-title-framework">Productivity Reports</h4>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Ruby on Rails</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">VRaptor</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">SpringMVC</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">NodeJS</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Django</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Bootstrap3</a>
-
-					<h4 class="navmap-list-title navmap-list-title-bancoDeDados">User settings</h4>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">MySQL</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">MariaDB</a>
-					<a class="rodapePrincipal-navMap-link" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">Postegres</a>
-
-				</nav>
-			</section>
-
-		</div>
-
-		<section class="rodapePrincipal-patrocinadores">
-			<div class="container">
-				<ul class="rodapePrincipal-patrocinadores-list">
-					<li>
-						<a class="rodapePrincipal-patrocinadores-list-link patrocinadores-list-link-alura" href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">
-							<img src="./img/logo-kodigo.png" alt="logo-kodigo" class="logo-kodigo">
-						</a>
-					</li>									
-				</ul>
-				<form class="rodapePrincipal-contatoForm" action="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#">
-					<fieldset>
-						<legend class="rodapePrincipal-contatoForm-legend" for="email-contato">Entre en contacto</legend>
-						<div class="rodapePrincipal-contatoForm-fieldset"> 
-							<input class="rodapePrincipal-contatoForm-emailInput" type="email" name="email-contato" id="email-contato">
-							<button class="rodapePrincipal-contatoForm-submit" type="submit">Enviar</button>
-						</div>
-					</fieldset>
-				</form>
-			</div>
-		</section>
-	</footer>
-
-
-</body></html>
+      <section class="rodapePrincipal-patrocinadores">
+        <div class="container">
+          <ul class="rodapePrincipal-patrocinadores-list">
+            <li>
+              <a
+                class="rodapePrincipal-patrocinadores-list-link patrocinadores-list-link-alura"
+                href="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+              >
+                <img
+                  src="./img/logo-kodigo.png"
+                  alt="logo-kodigo"
+                  class="logo-kodigo"
+                />
+              </a>
+            </li>
+          </ul>
+          <form
+            class="rodapePrincipal-contatoForm"
+            action="file:///C:/Users/USUARIO/Documents/Alura/CursoFlexBox/PaginaInicial/index.html#"
+          >
+            <fieldset>
+              <legend
+                class="rodapePrincipal-contatoForm-legend"
+                for="email-contato"
+              >
+                Entre en contacto
+              </legend>
+              <div class="rodapePrincipal-contatoForm-fieldset">
+                <input
+                  class="rodapePrincipal-contatoForm-emailInput"
+                  type="email"
+                  name="email-contato"
+                  id="email-contato"
+                />
+                <button
+                  class="rodapePrincipal-contatoForm-submit"
+                  type="submit"
+                >
+                  Enviar
+                </button>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </section>
+    </footer>
+  </body>
+</html>
