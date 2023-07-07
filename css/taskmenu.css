@@ -1,5 +1,6 @@
 /* Import Google Font - Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
 *{
   margin: 0;
   padding: 0;
@@ -16,6 +17,7 @@ body{
 }
 .wrapper{
   margin: 50px;
+  padding: 0 2.5%;
   display: grid;
   gap: 25px;
   grid-template-columns: repeat(auto-fill, 300px);
@@ -69,7 +71,12 @@ body{
   opacity: 0;
 }
 
-.daytime, .relevance-category {
+.daytime {
+  display: flex;
+  max-width: 55%;
+}
+
+.relevance-category {
   display: flex;
 }
 
@@ -253,7 +260,7 @@ form button{
   cursor: pointer;
   font-size: 17px;
   border-radius: 4px;
-  background: #6A93F8;
+  background: #2196F3;
 }
 
 @media (max-width: 660px){

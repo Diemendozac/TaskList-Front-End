@@ -1,0 +1,33 @@
+.repeat-box{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.4);
+}
+
+.repeat-box .popup{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+  width: 100%;
+  max-width: 400px;
+  justify-content: center;
+  transform: translate(-50%, -50%) scale(0.95);
+}
+
+.repeat-box, .popup{
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+.repeat-box.show, .repeat-box.show .popup{
+  opacity: 1;
+  pointer-events: auto;
+}
+.repeat-box.show .popup{
+  transform: translate(-50%, -50%) scale(1);
+}

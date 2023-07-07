@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="./css/flexbox.css" />
     <link rel="stylesheet" href="./css/taskmenu.css" />
     <link rel="stylesheet" href="./css/stylemenu.css" />
+    <link rel="stylesheet" href="./css/repeatbox.css" />
+    <link rel="stylesheet" href="./css/slider.css" />
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
@@ -19,34 +21,18 @@
   <body>
     <header class="headerPrincipal">
       <div class="container">
-        <h1 class="headerPrincipal-titulo">
-          <a
-            href="#"
-            >Task-List</a
-          >
-        </h1>
+        <div class="titulo__imagen">
+          <img class="img__logo" src="/img/logo.png" alt="logo-taskList">
+          <h1 class="headerPrincipal-titulo">
+            <a href="#">Task-List</a>
+          </h1>
+        </div>
 
         <nav class="headerPrincipal-nav">
-          <a
-            class="headerPrincipal-nav-link"
-            href="#"
-            >Home</a
-          >
-          <a
-            class="headerPrincipal-nav-link"
-            href="#"
-            >Tasks</a
-          >
-          <a
-            class="headerPrincipal-nav-link"
-            href="#"
-            >Categories</a
-          >
-          <a
-            class="headerPrincipal-nav-link"
-            href="#"
-            >Reports</a
-          >
+          <a class="headerPrincipal-nav-link" href="#">Home</a>
+          <a class="headerPrincipal-nav-link" href="#">Tasks</a>
+          <a class="headerPrincipal-nav-link" href="#">Categories</a>
+          <a class="headerPrincipal-nav-link" href="#">Reports</a>
           <a
             class="headerPrincipal-nav-link headerPrincipal-nav-link-app"
             href="#"
@@ -56,77 +42,121 @@
       </div>
     </header>
 
-    <main class="contenidoPrincipal">
+    <section class="contenidoPrincipal">
+      <h2 class="subtitulo">Your Tasks</h2>
       <div class="container">
-        <h2 class="subtitulo">Your Tasks</h2>
-
-        <nav>
-          <div class="popup-box">
-            <div class="popup">
-              <div class="content">
-                <header>
-                  <p></p>
-                  <i class="uil uil-times"></i>
-                </header>
-                <form action="#">
-                  <div class="row title">
-                    <label>Title</label>
-                    <input type="text" spellcheck="false" required />
+        <div class="popup-box">
+          <div class="popup">
+            <div class="content">
+              <header>
+                <p></p>
+                <i class="uil uil-times"></i>
+              </header>
+              <form action="#">
+                <div class="row title">
+                  <label>Title</label>
+                  <input type="text" spellcheck="false" required />
+                </div>
+                <div class="row description">
+                  <label>Description</label>
+                  <textarea spellcheck="false"></textarea>
+                </div>
+                <div class="daytime">
+                  <div class="row duedate">
+                    <label for="date">Due Date:</label>
+                    <input
+                      type="date"
+                      id="due-date-field"
+                      name="trip-start"
+                      min="2023-01-01"
+                    />
                   </div>
-                  <div class="row description">
-                    <label>Description</label>
-                    <textarea spellcheck="false"></textarea>
+                  <div class="row time">
+                    <label for="start">Specified Time:</label>
+                    <input id="time-field" type="time" />
                   </div>
-                  <div class="daytime">
-                    <div class="row duedate">
-                      <label for="date">Due Date:</label>
-                      <input
-                        type="date"
-                        id="due-date-field"
-                        name="trip-start"
-                        value="2018-07-22"
-                        min="2023-01-01"
-                        max="2023-05-05"
-                      />
-                    </div>
-                    <div class="row time">
-                      <label for="start">Specified Time:</label>
-                      <input id="time-field" type="time" />
-                    </div>
+                </div>
+                <div class="relevance-category">
+                  <div id="category-container" class="row category">
+                    <label for="Category">Category</label>
+                    <select id="category-field" name="Category">
+                      <option value="None">NONE</option>
+                    </select>
                   </div>
-                  <div class="relevance-category">
-                    <div id="category-container" class="row category">
-                      <label for="Category">Category</label>
-                      <select id="category-field" name="Category">
-                        <option value="None">NONE</option>
-                      </select>
-                    </div>
-                    <div class="row relevance">
-                      <label for="start">Relevance</label>
-                      <select id="relevance-field" style="width: 100%;" name="Relevance">
-                        <option value="NONE">NONE</option>
-                        <option value="LOW">LOW</option>
-                        <option value="MEDIUM">MEDIUM</option>
-                        <option value="HIGH">HIGH</option>
-                      </select>
-                    </div>
+                  <div class="row relevance">
+                    <label for="start">Relevance</label>
+                    <select
+                      id="relevance-field"
+                      style="width: 100%"
+                      name="Relevance"
+                    >
+                      <option value="NONE">NONE</option>
+                      <option value="LOW">LOW</option>
+                      <option value="MEDIUM">MEDIUM</option>
+                      <option value="HIGH">HIGH</option>
+                    </select>
                   </div>
-                    <button type="submit"></button>
-                </form>
-              </div>
+                </div>
+                <div class="repetitive-slider">
+                  <label class="repetitive-label">Set Repetition</label>
+                  <label class="switch" id="repetition-label">
+                    <input type="checkbox" id="repetition-slider" />
+                    <span class="slider round"></span>
+                  </label>
+                </div>
+                <button type="submit"></button>
+              </form>
             </div>
           </div>
-          <div class="wrapper">
-            <li class="add-box">
-              <div class="icon"><i class="uil uil-plus"></i></div>
-              <p>Add new task</p>
-            </li>
-          </div>
-
-          <script src="./js/script.js"></script>
-        </nav>
+        </div>
+        <div class="wrapper">
+          <li class="add-box">
+            <div class="icon"><i class="uil uil-plus"></i></div>
+            <p>Add new task</p>
+          </li>
+        </div>
       </div>
-    </main>
+    </section>
+
+    <section>
+      <div class="popup-box" id="repeat-box">
+        <div class="popup">
+          <div class="content">
+            <header>
+              <p>RepeatConfig Menu</p>
+              <i class="uil uil-times" id="repeat-exit"> </i>
+            </header>
+            <form action="">
+              <div class="row type">
+              <label>Repeat Type</label>
+                <select id="repeat-type" style="width: 100%" name="Relevance">
+                  <option value="HOURLY">HOURLY</option>
+                  <option value="DAILY">DAILY</option>
+                  <option value="WEEKLY">WEEKLY</option>
+                  <option value="MONTHLY">MONTHLY</option>
+                  <option value="YEARLY">YEARLY</option>
+                </select>
+              </div>
+              <div class="row number">
+                <label>Interval</label>
+                <input type="number" id="interval" spellcheck="false" required/>
+              </div>
+              <div class="row date">
+                <label for="date">End Date:</label>
+                <input
+                  type="date"
+                  style="width: 100%"
+                  id="end-date-field"
+                  name="trip-start"
+                  min="2023-01-01"
+                />
+              </div>
+              <button id="repeat-button" type="submit">Set Repetition</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <footer class="rodapePrincipal">
       <div class="container">
@@ -313,3 +343,5 @@
     </footer>
   </body>
 </html>
+
+<script src="./js/script.js"></script>

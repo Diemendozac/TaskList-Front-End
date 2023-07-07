@@ -209,6 +209,11 @@ body {
 	margin-bottom: 10px;
 }
 
+.logo-kodigo {
+	width: 20%;
+	max-width: 20%;
+}
+
 @media(min-width: 769px) {
 
 	.container {
@@ -216,7 +221,7 @@ body {
 	}
 
 	.subtitulo {
-		text-align: left;
+		
 	}
 
 	.headerPrincipal-nav-link {
@@ -257,7 +262,7 @@ body {
 
 	.logo-kodigo {
 		width: 20%;
-		height: 10%;
+		max-width: 10%;
 	}
 
 }
