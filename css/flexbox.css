@@ -18,6 +18,10 @@
   display: flex;
 }
 
+.headerPrincipal-nav-link {
+  cursor: pointer;
+}
+
 .videoSobre .container {
   display: flex;
 }

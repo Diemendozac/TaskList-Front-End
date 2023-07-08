@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./css/stylemenu.css" />
     <link rel="stylesheet" href="./css/repeatbox.css" />
     <link rel="stylesheet" href="./css/slider.css" />
+    <link rel="stylesheet" href="/css/caterogories/categories.css">
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
@@ -22,15 +23,15 @@
     <header class="headerPrincipal">
       <div class="container">
         <div class="titulo__imagen">
-          <img class="img__logo" src="/img/logo.png" alt="logo-taskList">
+          <img class="img__logo" src="/img/logo.jpg" alt="logo-taskList">
           <h1 class="headerPrincipal-titulo">
             <a href="#">Task-List</a>
           </h1>
         </div>
 
         <nav class="headerPrincipal-nav">
-          <a class="headerPrincipal-nav-link" href="#">Tasks</a>
-          <a class="headerPrincipal-nav-link" href="#">Categories</a>
+          <a class="headerPrincipal-nav-link" data-shwtsk-btn>Tasks</a>
+          <a class="headerPrincipal-nav-link" data-shwcat-btn>Categories</a>
           <a class="headerPrincipal-nav-link" href="#">Reports</a>
           <a
             class="headerPrincipal-nav-link headerPrincipal-nav-link-app"
@@ -113,6 +114,74 @@
             <div class="icon"><i class="uil uil-plus"></i></div>
             <p>Add new task</p>
           </li>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="popup-box" id="repeat-box">
+        <div class="popup">
+          <div class="content">
+            <header>
+              <p>RepeatConfig Menu</p>
+              <i class="uil uil-times" id="repeat-exit"> </i>
+            </header>
+            <form action="">
+              <div class="row type">
+              <label>Repeat Type</label>
+                <select id="repeat-type" style="width: 100%" name="Relevance">
+                  <option value="HOURLY">HOURLY</option>
+                  <option value="DAILY">DAILY</option>
+                  <option value="WEEKLY">WEEKLY</option>
+                  <option value="MONTHLY">MONTHLY</option>
+                  <option value="YEARLY">YEARLY</option>
+                </select>
+              </div>
+              <div class="row number">
+                <label>Interval</label>
+                <input type="number" id="interval" spellcheck="false" required/>
+              </div>
+              <div class="row date">
+                <label for="date">End Date:</label>
+                <input
+                  type="date"
+                  style="width: 100%"
+                  id="end-date-field"
+                  name="trip-start"
+                  min="2023-01-01"
+                />
+              </div>
+              <button id="repeat-button" type="submit">Set Repetition</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="category-box">
+        <div class="mainCard">
+          <div>
+            <header class="category__header">
+              <p>Categories Manager</p>
+              <i class="uil uil-times" id="category-exit"> </i>
+            </header>
+            <form class="category__form" action="">
+              <input
+                type="text"
+                name="task"
+                placeholder="Category Name"
+                class="inputForm"
+                autocomplete="off"
+                data-form-input
+              />
+              <button type="submit" class="btnCreate" data-form-btn>
+                Add <i class="fas fa-plus-circle"></i>
+              </button>
+            </form>
+          </div>
+          <ul class="cardsList" data-list>
+          </ul>
         </div>
       </div>
     </section>

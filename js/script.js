@@ -1,3 +1,6 @@
+/*import checkComplete from "./category-components/checkComplete.js";
+import deleteIcon from "./category-components/deleteIcon.js";
+*/
 const addBox = document.querySelector(".add-box"),
   popupBox = document.querySelector(".popup-box"),
   popupTitle = popupBox.querySelector("header p"),
@@ -15,12 +18,15 @@ const addBox = document.querySelector(".add-box"),
   repeatButton = document.getElementById("repeat-button"),
   repeatType = document.getElementById("repeat-type"),
   interval = document.getElementById("interval"),
-  endDateTag = document.getElementById("end-date-field");
+  endDateTag = document.getElementById("end-date-field"),
+  categoryBtn = document.querySelector("[data-shwcat-btn]"),
+  categoryBox = document.querySelector(".category-box"),
+  categoryCard = document.querySelector(".mainCard"),
+  categoryExitIcon = document.getElementById("category-exit"),
+  createCategoryBtn = document.querySelector("[data-form-btn]"),
+  searchTaskBtn = document.querySelector("[data-shwtsk-btn]");
 
-const createUrl = "http://localhost:8080/",
-  target = "/tasks";
-
-  var data;
+const pendingTasksEnd = "/tasks?status=pending";
 
 var RepeatOnConfig = {
   type: "",
@@ -40,15 +46,22 @@ let note = {
 };
 
 let user = {
-  userId:"5",
-  username:"asdfgg",
-  email:"alexit4@gmail.com",
-  password:"AlxisMore*00000"
+  userId: "5",
+  username: "asdfgg",
+  email: "alexit4@gmail.com",
+  password: "AlxisMore*00000",
+};
+
+let category = {
+  name: "",
+  user: user,
 };
 
 /*const notes = JSON.parse(localStorage.getItem("notes") || "[]");*/
-var notes;
-postRequestv2(JSON.stringify(user));
+var notes, categories, data;
+tasksRequests(JSON.stringify(user), pendingTasksEnd);
+categoriesRequests(JSON.stringify(user), pendingTasksEnd);
+/*postRequestv2(JSON.stringify(user));*/
 
 let isUpdate = false,
   updateId,
@@ -131,7 +144,6 @@ function updateNote(noteId, title, filterDesc) {
 function setCompleted(noteId) {
   notes[noteId].isCompleted = !notes[noteId].isCompleted;
   showNotes();
-  
 }
 
 function getStatus(noteId) {
@@ -176,9 +188,6 @@ addBtn.addEventListener("click", (e) => {
 });
 
 repeatSwitch.addEventListener("click", (e) => {
-  /*if(repeatOn === null && intervals === null) {
-    console.log("Hola mundo");
-  }*/
   repeatSwitch.checked = false;
   if (RepeatOnConfig.type !== "") {
     RepeatOnConfig.type = "";
@@ -192,7 +201,6 @@ repeatSwitch.addEventListener("click", (e) => {
 closeExitIcon.addEventListener("click", () => {
   titleTag.value = descTag.value = "";
   repeatBox.classList.remove("show");
-  /*document.querySelector("body").style.overflow = "auto";*/
 });
 
 repeatButton.addEventListener("click", (e) => {
@@ -207,64 +215,113 @@ repeatButton.addEventListener("click", (e) => {
   //TODO: ERROR MESSAGE
 });
 
-function getRequest (url, endPoint) {
-  fetch(`${url}${endPoint}`)
-  .then((response) => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error("Error en la petición POST");
-    }
-  }).then(data => {
-     console.log(data);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    return null;
-  });
+categoryBtn.addEventListener("click", (e) => {
+  categoryBox.classList.add("show");
+  categoryCard.classList.add("show");
+});
+
+categoryExitIcon.addEventListener("click", () => {
+  categoryBox.classList.remove("show");
+  categoryCard.classList.remove("show");
+});
+
+async function tasksRequests(jsonData, endPoint) {
+  notes = await postRequestv2(jsonData, endPoint);
+  showNotes();
 }
 
-function postRequest(jsonData, endPoint) {
-  fetch(endPoint, {
+async function categoriesRequests(jsonData, endPoint) {
+  categories = await postRequestv2(jsonData, endPoint);
+}
+
+const createCategory = (evento) => {
+  evento.preventDefault();
+  const input = document.querySelector("[data-form-input]");
+  const value = input.value.trim();
+  if (value !== "") {
+    const list = document.querySelector("[data-list]");
+    const task = document.createElement("li");
+    task.classList.add("card");
+    input.value = "";
+    //backticks
+    const taskContent = document.createElement("div");
+    taskContent.classList.add("icon__task");
+
+    const titleTask = document.createElement("span");
+    titleTask.classList.add("task");
+    titleTask.innerText = value;
+    taskContent.appendChild(checkComplete());
+    taskContent.appendChild(titleTask);
+    // task.innerHTML = content;
+    task.appendChild(taskContent);
+    task.appendChild(deleteIcon());
+    list.appendChild(task);
+  }
+  input.value = "";
+};
+
+//Arrow functions o funciones anonimas
+createCategoryBtn.addEventListener("click", createCategory);
+
+const checkComplete = () => {
+  const i = document.createElement("i");
+  i.classList.add("uil", "uil-search", "icon");
+  i.addEventListener("click", completeTask);
+  return i;
+};
+// Immediately invoked function expression IIFE
+const completeTask = (event) => {
+  const element = event.target;
+  alert("Hola mundo");
+};
+
+const deleteIcon = () => {
+  const i = document.createElement("i");
+  i.classList.add("uil-trash", "trashIcon", "icon");
+  i.addEventListener("click", deleteTask);
+  return i;
+};
+
+const deleteTask = (event) => {
+  const parent = event.target.parentElement;
+  parent.remove();
+};
+
+function getRequest(url, endPoint) {
+  fetch(`${url}${endPoint}`)
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Error en la petición POST");
+      }
+    })
+    .then((data) => {
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      return null;
+    });
+}
+
+async function postRequestv2(jsonData, endPoint) {
+  const location = window.location.hostname;
+  const settings = {
     method: "POST",
     headers: {
+      Accept: "application/json",
       "Content-Type": "application/json",
     },
     body: jsonData,
-  }).then((response) => {
-    if (response.ok) {
-      notes = response.body;
-      console.log(response.json());
-    } else {
-      throw new Error("Error en la petición POST");
-    }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    return null;
-  });
-}
-
-async function postRequestv2 (jsonData) {
-  const location = window.location.hostname;
-  const settings = {
-      method: 'POST',
-      headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: jsonData,
   };
   try {
-      const fetchResponse = await fetch(`http://localhost:8080/tasks?status=pending`, settings);
-      data = await fetchResponse.json();
-      notes = data;
-      showNotes();
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    return (data = await fetchResponse.json());
   } catch (e) {
-      return e;
-  }    
-
+    return e;
+  }
 }
-
-
-
