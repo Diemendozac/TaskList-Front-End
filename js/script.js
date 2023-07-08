@@ -20,6 +20,8 @@ const addBox = document.querySelector(".add-box"),
 const createUrl = "http://localhost:8080/",
   target = "/tasks";
 
+  var data;
+
 var RepeatOnConfig = {
   type: "",
   interval: "",
@@ -37,7 +39,17 @@ let note = {
   repeatOnConfig: null,
 };
 
-const notes = JSON.parse(localStorage.getItem("notes") || "[]");
+let user = {
+  userId:"5",
+  username:"asdfgg",
+  email:"alexit4@gmail.com",
+  password:"AlxisMore*00000"
+};
+
+/*const notes = JSON.parse(localStorage.getItem("notes") || "[]");*/
+var notes;
+postRequestv2(JSON.stringify(user));
+
 let isUpdate = false,
   updateId,
   completedData = ["uil-check", "Done"];
@@ -66,7 +78,7 @@ function showNotes() {
     getStatus(id);
     let liTag = `<li class="note">
                         <div class="details">
-                            <p>${note.title}</p>
+                            <p>${note.name}</p>
                             <span>${filterDesc}</span>
                         </div>
                         <div class="bottom-content">
@@ -74,7 +86,7 @@ function showNotes() {
                             <div class="settings">
                                 <i onclick="showMenu(this)" class="uil uil-ellipsis-h"></i>
                                 <ul class="menu">
-                                    <li onclick="updateNote(${id}, '${note.title}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
+                                    <li onclick="updateNote(${id}, '${note.name}', '${filterDesc}')"><i class="uil uil-pen"></i>Edit</li>
                                     <li onclick="deleteNote(${id})"><i class="uil uil-trash"></i>Delete</li>
                                     <li onclick="setCompleted(${id})"><i class="uil ${completedData[0]}"></i>${completedData[1]}</li>
                                 </ul>
@@ -195,6 +207,23 @@ repeatButton.addEventListener("click", (e) => {
   //TODO: ERROR MESSAGE
 });
 
+function getRequest (url, endPoint) {
+  fetch(`${url}${endPoint}`)
+  .then((response) => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      throw new Error("Error en la petición POST");
+    }
+  }).then(data => {
+     console.log(data);
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    return null;
+  });
+}
+
 function postRequest(jsonData, endPoint) {
   fetch(endPoint, {
     method: "POST",
@@ -204,23 +233,38 @@ function postRequest(jsonData, endPoint) {
     body: jsonData,
   }).then((response) => {
     if (response.ok) {
-      return response.json();
+      notes = response.body;
+      console.log(response.json());
     } else {
       throw new Error("Error en la petición POST");
     }
-  });
-  /*.then(data => {
-    return data;
   })
   .catch(error => {
     console.error('Error:', error);
     return null;
-  });*/
+  });
 }
 
-function getRequest (url, endPoint) {
-  fetch(`${url}${endPoint}`)
-  .then(function (data) {
-    console.log('the data', data);
-  })
+async function postRequestv2 (jsonData) {
+  const location = window.location.hostname;
+  const settings = {
+      method: 'POST',
+      headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: jsonData,
+  };
+  try {
+      const fetchResponse = await fetch(`http://localhost:8080/tasks?status=pending`, settings);
+      data = await fetchResponse.json();
+      notes = data;
+      showNotes();
+  } catch (e) {
+      return e;
+  }    
+
 }
+
+
+
