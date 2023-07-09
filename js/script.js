@@ -1,6 +1,10 @@
 /*import checkComplete from "./category-components/checkComplete.js";
 import deleteIcon from "./category-components/deleteIcon.js";
 */
+
+/*token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaWVtZW5kb3phYyIsImlhdCI6MTY4ODg4NjYwMywiZXhwIjoxNjg4OTczMDAzfQ.8VQTL-PzKjTzFf7Nm-ns6hrqXT-SzOHPuHb_ri3hrbY */
+/*status=${task__status.value.toLowercase} */
+/*completed: no future */
 const addBox = document.querySelector(".add-box"),
   popupBox = document.querySelector(".popup-box"),
   popupTitle = popupBox.querySelector("header p"),
@@ -27,8 +31,12 @@ const addBox = document.querySelector(".add-box"),
   searchTaskBtn = document.querySelector("[data-shwtsk-btn]"),
   searchBox = document.getElementById("search-box"),
   closeTaskIcon = document.querySelector("[data-tsksrch-cls]"),
+  taskStatusSearch = document.querySelector("[data-task-status]"),
+  dueToSearch = document.querySelector("[data-due-to]"),
+  relevanceSearch = document.querySelector("[data-relevance-search]"),
   categoryListSearch = document.querySelector("[data-category-search]"),
-  categoryListCreate = document.querySelector("[data-category-create]");
+  categoryListCreate = document.querySelector("[data-category-create]"),
+  futureOption = document.querySelector(".dueTo__Data");
 
 const pendingTasksEnd = "/tasks?status=pending";
 
@@ -239,21 +247,47 @@ async function categoriesRequests(jsonData, endPoint) {
   categories = await postRequestv2(jsonData, endPoint);
 }
 
-function refreshCategoriesSelectors(){
-  categoryListSearch.innerHTML = "";
+function refreshCategoryCreateSelector(){
   categoryListCreate.innerHTML = "";
   let option = document.createElement("option");
   option.value = "";
   option.text = "None";
+  categoryListCreate.appendChild(option);
+  for (var i = 0; i < categoryArray.length; i++) {
+    option = document.createElement("option");
+    option.value = categoryArray[i];
+    option.text = categoryArray[i];
+    categoryListCreate.appendChild(option);
+  }
+}
+
+function refreshCategorySearchSelector(){
+  categoryListSearch.innerHTML = "";
+  let option = document.createElement("option");
+  option.value = "";
+  option.text = "None";
   categoryListSearch.appendChild(option);
-  /*categoryListCreate.appendChild(option);*/
   for (var i = 0; i < categoryArray.length; i++) {
     option = document.createElement("option");
     option.value = categoryArray[i];
     option.text = categoryArray[i];
     categoryListSearch.appendChild(option);
-    /*categoryListCreate.appendChild(option);*/
   }
+}
+
+taskStatusSearch.addEventListener("change", (e) => {
+  if(taskStatusSearch.value === "COMPLETED"){
+    futureOption.classList.add("hide");
+    if(dueToSearch.value === "FUTURE") {
+      dueToSearch.value = "ALL";
+    }
+  } else {
+    futureOption.classList.remove("hide");
+  }
+});
+
+function endPointGenerator() {
+  
 }
 
 const createCategory = (evento) => {

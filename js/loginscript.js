@@ -4,28 +4,34 @@ let formSignUp = document.querySelector(".sign-up"),
   passFieldSignUp = formSignUp.querySelector(".create-password"),
   passInputSignUp = passFieldSignUp.querySelector(".password"),
   cPassField = formSignUp.querySelector(".confirm-password"),
-  cPassInput = cPassField.querySelector(".cPassword");
-let formLogIn = document.querySelector(".log-in"),
+  cPassInput = cPassField.querySelector(".cPassword"),
+  formLogIn = document.querySelector(".log-in"),
   emailFieldLogIn = formLogIn.querySelector(".email-field"),
   emailInputLogIn = emailFieldLogIn.querySelector(".email"),
   passFieldLogIn = formLogIn.querySelector(".create-password"),
   passInputLogIn = passFieldLogIn.querySelector(".insert-password"),
-  SignInField = formLogIn.querySelector(".field");
-const loginUrl = "http://localhost:8080/api/books";
-const signUpUrl = "http://localhost:8081/api/books";
+  signInField = formLogIn.querySelector(".field"),
+  usernameField = formSignUp.querySelector(".username-field"),
+  usernameInputSignUp = usernameField.querySelector(".username");
+
+  
+const loginEndPoint = "http://localhost:8080/login";
+const signUpEndPoint = "http://localhost:8080/register";
 const taskMenuUrl = "http://127.0.0.1:5500/menu-task-list.html";
+
+let userSignUpData = {
+  username: "",
+  email: "",
+  password: ""
+};
+
+let userLoginData = {
+  username: "",
+  password: ""
+};
 
 
 document.querySelector(".login-container").classList.add("active");
-
-// Email Validtion
-function checkEmail(fieldElement, element) {
-  const emaiPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
-  if (!element.value.match(emaiPattern)) {
-    return fieldElement.classList.add("invalid"); //adding invalid class if email value do not mathced with email pattern
-  }
-  fieldElement.classList.remove("invalid"); //removing invalid class if email value matched with emaiPattern
-}
 
 // Hide and show password
 const eyeIcons = document.querySelectorAll(".show-hide");
@@ -64,12 +70,10 @@ function confirmPass(fieldElement, element) {
 // Calling Funtion on Form Sumbit
 formSignUp.addEventListener("submit", (e) => {
   e.preventDefault(); //preventing form submitting
-  checkEmail(emailFieldSignUp, emailInputSignUp);
   validatePass(passFieldSignUp, passInputSignUp);
   confirmPass(cPassField, cPassInput);
 
   //calling function on key up
-  emailInputSignUp.addEventListener("keyup", checkEmail);
   passInputSignUp.addEventListener("keyup", validatePass);
   cPassInput.addEventListener("keyup", confirmPass);
 
@@ -78,18 +82,15 @@ formSignUp.addEventListener("submit", (e) => {
     !passFieldSignUp.classList.contains("invalid") &&
     !cPassField.classList.contains("invalid")
   ) {
-    inputToJsonConverter(formSignUp)
-    postRequest(inputToJsonConverter(formSignUp), signUpUrl);
+    postRequest(signUpDataToJson(), signUpEndPoint);
   }
 });
 
 formLogIn.addEventListener("submit", (e) => {
   e.preventDefault(); //preventing form submitting
-  checkEmail(emailFieldLogIn, emailInputLogIn);
   validatePass(passFieldLogIn, passInputLogIn);
 
   //calling function on key up
-  emailInputLogIn.addEventListener("keyup", checkEmail);
   passInputLogIn.addEventListener("keyup", validatePass);
 
   if (
@@ -97,56 +98,49 @@ formLogIn.addEventListener("submit", (e) => {
     !passFieldLogIn.classList.contains("invalid")
   ) {
     //location.href = formLogIn.getAttribute("action");
-    if(postRequest(inputToJsonConverter(formLogIn), loginUrl) === Response.ok) {
+    if(postRequest(loginDataToJson(), loginEndPoint) === Response.ok) {
       location.href = taskMenuUrl;
     }
   }
 });
 
-function inputToJsonConverter(form){
-  var formData = new FormData();
-  var formElements = form.querySelectorAll("div > .input-field > input");
+function signUpDataToJson(){
+  userSignUpData.username = usernameInputSignUp.value;
+  userSignUpData.email = emailInputSignUp.value;
+  userSignUpData.password = passInputSignUp.value;
 
-  for(var i = 0; i < 2; i++){
-    var fieldName = formElements[i].name;
-    var fieldValue = formElements[i].value;
-    formData.append(fieldName, fieldValue);
-  }
-
-  var jsonObject = {};
-
-  formData.forEach(function(value, key) {
-    jsonObject[key] = value;
-  });
-
-  var jsonData = JSON.stringify(jsonObject);
-  return jsonData;
+  return JSON.stringify(userSignUpData);
 
 }
 
-function postRequest(jsonData, endPoint) {
-  fetch(endPoint, {
-    method: 'POST',
+function loginDataToJson(){
+  userLoginData.username = emailInputLogIn.value;
+  userLoginData.password = passInputLogIn.value;
+
+  return JSON.stringify(userLoginData);
+
+}
+
+async function postRequest(jsonData, endPoint) {
+  const location = window.location.hostname;
+  const settings = {
+    method: "POST",
     headers: {
-      'Content-Type' : 'application/json'
+      Accept: "application/json",
+      "Content-Type": "application/json",
     },
-    body: jsonData
-  }).then(response => {
-    if (response.ok) {
-      return response.json();
-    } else {
-      throw new Error('Error en la petición POST');
-    }
-  })
-  /*.then(data => {
-    return data;
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    return null;
-  });*/
+    body: jsonData,
+  };
+  try {
+    const fetchResponse = await fetch(
+      `${endPoint}`,
+      settings
+    );
+    return (data = await fetchResponse.json());
+  } catch (e) {
+    return e;
+  }
 }
-
 
 
 document.querySelector("#sign-up-a").addEventListener("click", function () {
@@ -162,3 +156,15 @@ document.querySelector("#log-in-a").addEventListener("click", function () {
   passFieldSignUp.classList.remove("invalid");
   cPassField.classList.remove("invalid");
 });
+
+
+/*
+function checkEmail(fieldElement, element) {
+  const emaiPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+  if (!element.value.match(emaiPattern)) {
+    return fieldElement.classList.add("invalid"); //adding invalid class if email value do not mathced with email pattern
+  }
+  fieldElement.classList.remove("invalid"); //removing invalid class if email value matched with emaiPattern
+}
+
+ */

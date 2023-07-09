@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="./css/repeatbox.css" />
     <link rel="stylesheet" href="./css/slider.css" />
     <link rel="stylesheet" href="/css/caterogories/categories.css">
+    <link rel="stylesheet" href="/css/search-task/due-to.css">
     <link
       rel="stylesheet"
       href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
@@ -198,7 +199,6 @@
               <div class="row type">
               <label>Task Status</label>
                 <select data-task-status>
-                  <option value="ALL">ALL</option>
                   <option value="PENDING">PENDING</option>
                   <option value="COMPLETED">COMPLETED</option>
                 </select>
@@ -206,14 +206,16 @@
               <div class="row number">
                 <label>Due To</label>
                 <select data-due-to>
+                  <option value="ALL">ALL</option>
                   <option value="TODAY">TODAY</option>
                   <option value="PREVIOUS">PREVIOUS</option>
-                  <option value="FUTURE">FUTURE</option>
+                  <option value="FUTURE" class="dueTo__Data">FUTURE</option>
                 </select>
               </div>
               <div class="row relevance">
                 <label for="start">Relevance</label>
-                <select data-relevance>
+                <select data-relevance-search>
+                  <option value="ALL">ALL</option>
                   <option value="NONE">NONE</option>
                   <option value="LOW">LOW</option>
                   <option value="MEDIUM">MEDIUM</option>
@@ -223,10 +225,10 @@
               <div class="row category">
                 <label for="start">Category</label>
                 <select data-category-search>
-                  <option value="None">NONE</option>
+                  <option value="ALL">ALL</option>
                 </select>
               </div>
-              <button id="repeat-button" type="submit">Set Repetition</button>
+              <button id="repeat-button" type="submit">Search</button>
             </form>
           </div>
         </div>
