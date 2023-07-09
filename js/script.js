@@ -24,10 +24,15 @@ const addBox = document.querySelector(".add-box"),
   categoryCard = document.querySelector(".mainCard"),
   categoryExitIcon = document.getElementById("category-exit"),
   createCategoryBtn = document.querySelector("[data-form-btn]"),
-  searchTaskBtn = document.querySelector("[data-shwtsk-btn]");
+  searchTaskBtn = document.querySelector("[data-shwtsk-btn]"),
+  searchBox = document.getElementById("search-box"),
+  closeTaskIcon = document.querySelector("[data-tsksrch-cls]"),
+  categoryListSearch = document.querySelector("[data-category-search]"),
+  categoryListCreate = document.querySelector("[data-category-create]");
 
 const pendingTasksEnd = "/tasks?status=pending";
 
+let categoryArray = ["Salir", "Entrenar", "Estudiar"];
 var RepeatOnConfig = {
   type: "",
   interval: "",
@@ -234,6 +239,23 @@ async function categoriesRequests(jsonData, endPoint) {
   categories = await postRequestv2(jsonData, endPoint);
 }
 
+function refreshCategoriesSelectors(){
+  categoryListSearch.innerHTML = "";
+  categoryListCreate.innerHTML = "";
+  let option = document.createElement("option");
+  option.value = "";
+  option.text = "None";
+  categoryListSearch.appendChild(option);
+  /*categoryListCreate.appendChild(option);*/
+  for (var i = 0; i < categoryArray.length; i++) {
+    option = document.createElement("option");
+    option.value = categoryArray[i];
+    option.text = categoryArray[i];
+    categoryListSearch.appendChild(option);
+    /*categoryListCreate.appendChild(option);*/
+  }
+}
+
 const createCategory = (evento) => {
   evento.preventDefault();
   const input = document.querySelector("[data-form-input]");
@@ -260,8 +282,18 @@ const createCategory = (evento) => {
   input.value = "";
 };
 
-//Arrow functions o funciones anonimas
+const searchTask = (event) => {
+  categoryBox.classList.add("show");
+  searchBox.classList.add("show");
+}
+
+closeTaskIcon.addEventListener("click", () => {
+  categoryBox.classList.remove("show");
+  searchBox.classList.remove("show");
+});
+
 createCategoryBtn.addEventListener("click", createCategory);
+searchTaskBtn.addEventListener("click", searchTask);
 
 const checkComplete = () => {
   const i = document.createElement("i");
