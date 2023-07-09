@@ -36,7 +36,9 @@ const addBox = document.querySelector(".add-box"),
   relevanceSearch = document.querySelector("[data-relevance-search]"),
   categoryListSearch = document.querySelector("[data-category-search]"),
   categoryListCreate = document.querySelector("[data-category-create]"),
-  futureOption = document.querySelector(".dueTo__Data");
+  futureOption = document.querySelector(".dueTo__Data"),
+  searchForm = document.getElementById("search-box"),
+  searchTaskButton = document.querySelector("[data-task-search]");
 
 const pendingTasksEnd = "/tasks?status=pending";
 
@@ -238,10 +240,69 @@ categoryExitIcon.addEventListener("click", () => {
   categoryCard.classList.remove("show");
 });
 
+/*Task HTTP Requests */
+
+const searchTask = (event) => {
+  categoryBox.classList.add("show");
+  searchBox.classList.add("show");
+}
+
+searchTaskBtn.addEventListener("click", searchTask);
+
+
+function endPointGenerator() {
+  let allSelectSearchForm = searchForm.querySelectorAll(".row > select");
+  let result = "";
+  allSelectSearchForm.forEach((element) => {
+    
+    if(element.value !== "ALL") {
+      if(element.name !== "status") result += "&";
+      result += `${element.name}=${element.value}`
+    } 
+  });
+  console.log(result.toLowerCase());
+}
+
 async function tasksRequests(jsonData, endPoint) {
   notes = await postRequestv2(jsonData, endPoint);
   showNotes();
 }
+
+searchTaskBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  tasksRequests("", endPointGenerator());
+  
+});
+
+/*Category HTTP Request*/
+
+const createCategory = (evento) => {
+  evento.preventDefault();
+  const input = document.querySelector("[data-form-input]");
+  const value = input.value.trim();
+  if (value !== "") {
+    const list = document.querySelector("[data-list]");
+    const task = document.createElement("li");
+    task.classList.add("card");
+    input.value = "";
+    //backticks
+    const taskContent = document.createElement("div");
+    taskContent.classList.add("icon__task");
+
+    const titleTask = document.createElement("span");
+    titleTask.classList.add("task");
+    titleTask.innerText = value;
+    taskContent.appendChild(checkComplete());
+    taskContent.appendChild(titleTask);
+    // task.innerHTML = content;
+    task.appendChild(taskContent);
+    task.appendChild(deleteIcon());
+    list.appendChild(task);
+  }
+  input.value = "";
+};
+
+createCategoryBtn.addEventListener("click", createCategory);
 
 async function categoriesRequests(jsonData, endPoint) {
   categories = await postRequestv2(jsonData, endPoint);
@@ -286,48 +347,13 @@ taskStatusSearch.addEventListener("change", (e) => {
   }
 });
 
-function endPointGenerator() {
-  
-}
 
-const createCategory = (evento) => {
-  evento.preventDefault();
-  const input = document.querySelector("[data-form-input]");
-  const value = input.value.trim();
-  if (value !== "") {
-    const list = document.querySelector("[data-list]");
-    const task = document.createElement("li");
-    task.classList.add("card");
-    input.value = "";
-    //backticks
-    const taskContent = document.createElement("div");
-    taskContent.classList.add("icon__task");
-
-    const titleTask = document.createElement("span");
-    titleTask.classList.add("task");
-    titleTask.innerText = value;
-    taskContent.appendChild(checkComplete());
-    taskContent.appendChild(titleTask);
-    // task.innerHTML = content;
-    task.appendChild(taskContent);
-    task.appendChild(deleteIcon());
-    list.appendChild(task);
-  }
-  input.value = "";
-};
-
-const searchTask = (event) => {
-  categoryBox.classList.add("show");
-  searchBox.classList.add("show");
-}
 
 closeTaskIcon.addEventListener("click", () => {
   categoryBox.classList.remove("show");
   searchBox.classList.remove("show");
 });
 
-createCategoryBtn.addEventListener("click", createCategory);
-searchTaskBtn.addEventListener("click", searchTask);
 
 const checkComplete = () => {
   const i = document.createElement("i");
@@ -391,3 +417,5 @@ async function postRequestv2(jsonData, endPoint) {
     return e;
   }
 }
+
+

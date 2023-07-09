@@ -198,14 +198,14 @@
             <form action="">
               <div class="row type">
               <label>Task Status</label>
-                <select data-task-status>
-                  <option value="PENDING">PENDING</option>
-                  <option value="COMPLETED">COMPLETED</option>
+                <select data-task-status name="status">
+                  <option name="status" value="PENDING">PENDING</option>
+                  <option name="status" value="COMPLETED">COMPLETED</option>
                 </select>
               </div>
               <div class="row number">
                 <label>Due To</label>
-                <select data-due-to>
+                <select data-due-to name="due">
                   <option value="ALL">ALL</option>
                   <option value="TODAY">TODAY</option>
                   <option value="PREVIOUS">PREVIOUS</option>
@@ -214,7 +214,7 @@
               </div>
               <div class="row relevance">
                 <label for="start">Relevance</label>
-                <select data-relevance-search>
+                <select data-relevance-search name="rel">
                   <option value="ALL">ALL</option>
                   <option value="NONE">NONE</option>
                   <option value="LOW">LOW</option>
@@ -224,11 +224,11 @@
               </div>
               <div class="row category">
                 <label for="start">Category</label>
-                <select data-category-search>
+                <select data-category-search name="category">
                   <option value="ALL">ALL</option>
                 </select>
               </div>
-              <button id="repeat-button" type="submit">Search</button>
+              <button id="repeat-button" type="submit" data-task-search>Search</button>
             </form>
           </div>
         </div>
