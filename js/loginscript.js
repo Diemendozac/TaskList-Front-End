@@ -19,6 +19,8 @@ const loginEndPoint = "http://localhost:8080/login";
 const signUpEndPoint = "http://localhost:8080/register";
 const taskMenuUrl = "http://127.0.0.1:5500/menu-task-list.html";
 
+var responseData;
+
 let userSignUpData = {
   username: "",
   email: "",
@@ -98,9 +100,7 @@ formLogIn.addEventListener("submit", (e) => {
     !passFieldLogIn.classList.contains("invalid")
   ) {
     //location.href = formLogIn.getAttribute("action");
-    if(postRequest(loginDataToJson(), loginEndPoint) === Response.ok) {
-      location.href = taskMenuUrl;
-    }
+    postRequest(loginDataToJson(), loginEndPoint);
   }
 });
 
@@ -136,9 +136,15 @@ async function postRequest(jsonData, endPoint) {
       `${endPoint}`,
       settings
     );
-    return (data = await fetchResponse.json());
+    data = await fetchResponse.json();
+    
   } catch (e) {
+    console.log(e);
     return e;
+  }
+
+  if(data.message === "Successful Authentication") {
+    window.location.href = taskMenuUrl;
   }
 }
 
