@@ -235,33 +235,33 @@
     </section>
 
     <section>
-      <div class="popup-box" id="search-box">
+      <div class="popup-box" id="report-box">
         <div class="popup">
           <div class="content">
             <header>
-              <p>Search Task Menu</p>
+              <p>Report Sender</p>
               <i class="uil uil-times" data-tsksrch-cls> </i>
             </header>
             <form action="">
-              <div class="row type">
-              <label>Task Status</label>
-                <select data-task-status name="status">
-                  <option value="pending">PENDING</option>
-                  <option value="completed">COMPLETED</option>
-                </select>
+              <div class="row init-date">
+                <label>Init Date</label>
+                <input
+                      type="date"
+                      id="due-date-field"
+                      name="trip-start"
+                      min="2023-01-01"
+                    />
+                  </div>
               </div>
-              <div class="row number">
-                <label>Due To</label>
-                <select data-due-to name="due">
-                  <option value="all">ALL</option>
-                  <option value="today">TODAY</option>
-                  <option value="previous">PREVIOUS</option>
-                  <option value="future" class="dueTo__Data">FUTURE</option>
-                </select>
-              </div>
-              <div class="row category">
-                <label for="start">Category</label>
-                <select data-category-search name="categoryId">
+              <div class="row finish-date">
+                <label for="start">Finish Date</label>
+                <input
+                      type="date"
+                      id="due-date-field"
+                      name="trip-start"
+                      min="2023-01-01"
+                    />
+                  </div>
                 </select>
               </div>
               <button id="repeat-button" type="submit" data-send-report>Search</button>

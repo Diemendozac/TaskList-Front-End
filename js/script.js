@@ -34,6 +34,7 @@ const addBox = document.querySelector(".add-box"),
   searchTaskButton = document.querySelector("[data-task-search]"),
   categoryCardsList = document.querySelector(".cardsList"),
   sendReportBtn = document.querySelector("[data-sndrep-btn]");
+  /*reportBox = document.querySelector("");*/
 
 const pendingTasksEnd = "/tasks?status=pending";
 var token = localStorage.getItem("token");
@@ -611,6 +612,8 @@ async function deleteRequestForCategory(endPoint, parent) {
     );
     getAllCategories("/categories");
     parent.remove();
+    refreshCategoryCreateSelector();
+    refreshCategorySearchSelector();
   } catch (e) {
     return e;
   }
