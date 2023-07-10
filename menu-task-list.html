@@ -33,7 +33,7 @@
         <nav class="headerPrincipal-nav">
           <a class="headerPrincipal-nav-link" data-shwtsk-btn>Tasks</a>
           <a class="headerPrincipal-nav-link" data-shwcat-btn>Categories</a>
-          <a class="headerPrincipal-nav-link" href="#">Reports</a>
+          <a class="headerPrincipal-nav-link" data-sndrep-btn>Reports</a>
           <a
             class="headerPrincipal-nav-link headerPrincipal-nav-link-app"
             href="#"
@@ -228,6 +228,43 @@
                 </select>
               </div>
               <button id="repeat-button" type="submit" data-task-search>Search</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="popup-box" id="search-box">
+        <div class="popup">
+          <div class="content">
+            <header>
+              <p>Search Task Menu</p>
+              <i class="uil uil-times" data-tsksrch-cls> </i>
+            </header>
+            <form action="">
+              <div class="row type">
+              <label>Task Status</label>
+                <select data-task-status name="status">
+                  <option value="pending">PENDING</option>
+                  <option value="completed">COMPLETED</option>
+                </select>
+              </div>
+              <div class="row number">
+                <label>Due To</label>
+                <select data-due-to name="due">
+                  <option value="all">ALL</option>
+                  <option value="today">TODAY</option>
+                  <option value="previous">PREVIOUS</option>
+                  <option value="future" class="dueTo__Data">FUTURE</option>
+                </select>
+              </div>
+              <div class="row category">
+                <label for="start">Category</label>
+                <select data-category-search name="categoryId">
+                </select>
+              </div>
+              <button id="repeat-button" type="submit" data-send-report>Search</button>
             </form>
           </div>
         </div>
