@@ -1,10 +1,3 @@
-/*import checkComplete from "./category-components/checkComplete.js";
-import deleteIcon from "./category-components/deleteIcon.js";
-*/
-
-/*token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkaWVtZW5kb3phYyIsImlhdCI6MTY4ODg4NjYwMywiZXhwIjoxNjg4OTczMDAzfQ.8VQTL-PzKjTzFf7Nm-ns6hrqXT-SzOHPuHb_ri3hrbY */
-/*status=${task__status.value.toLowercase} */
-/*completed: no future */
 const addBox = document.querySelector(".add-box"),
   popupBox = document.querySelector(".popup-box"),
   popupTitle = popupBox.querySelector("header p"),
@@ -38,45 +31,31 @@ const addBox = document.querySelector(".add-box"),
   categoryListCreate = document.querySelector("[data-category-create]"),
   futureOption = document.querySelector(".dueTo__Data"),
   searchForm = document.getElementById("search-box"),
-  searchTaskButton = document.querySelector("[data-task-search]");
+  searchTaskButton = document.querySelector("[data-task-search]"),
+  categoryCardsList = document.querySelector(".cardsList");
 
 const pendingTasksEnd = "/tasks?status=pending";
+var token = localStorage.getItem("token");
 
-let categoryArray = ["Salir", "Entrenar", "Estudiar"];
 var RepeatOnConfig = {
   type: "",
   interval: "",
   finishDate: "",
 };
 
-let note = {
-  name: "",
-  description: "",
-  dueDate: "",
-  specifiedTime: "",
-  category: "",
-  relevance: "",
-  isCompleted: false,
-  repeatOnConfig: null,
-};
-
-let user = {
-  userId: "5",
-  username: "asdfgg",
-  email: "alexit4@gmail.com",
-  password: "AlxisMore*00000",
-};
-
 let category = {
+  categoryId: -1,
   name: "",
-  user: user,
 };
+
+let noteIdAux;
 
 /*const notes = JSON.parse(localStorage.getItem("notes") || "[]");*/
-var notes, categories, data;
-tasksRequests(JSON.stringify(user), pendingTasksEnd);
-categoriesRequests(JSON.stringify(user), pendingTasksEnd);
-/*postRequestv2(JSON.stringify(user));*/
+var notes = [],
+  categories = [],
+  data;
+getRequestforTaskSearch(pendingTasksEnd);
+getAllCategories("/categories");
 
 let isUpdate = false,
   updateId,
@@ -100,9 +79,14 @@ closeIcon.addEventListener("click", () => {
 
 function showNotes() {
   if (!notes) return;
+  let filterDesc;
   document.querySelectorAll(".note").forEach((li) => li.remove());
   notes.forEach((note, id) => {
-    let filterDesc = note.description.replaceAll("\n", "<br/>");
+    if(note.description !== null){
+      filterDesc = note.description.replaceAll("\n", "<br/>");
+    } else {
+      filterDesc = "";
+    }
     getStatus(id);
     let liTag = `<li class="note">
                         <div class="details">
@@ -138,16 +122,17 @@ function showMenu(elem) {
 }
 
 function deleteNote(noteId) {
-  let confirmDel = confirm("Are you sure you want to delete this note?");
-  if (!confirmDel) return;
-  notes.splice(noteId, 1);
-  localStorage.setItem("notes", JSON.stringify(notes));
-  showNotes();
+  /*let confirmDel = confirm("Are you sure you want to delete this note?");
+  if (!confirmDel) return;*/
+  console.log(notes[noteId].taskId);
+  deleteRequestForTask(`/tasks/${notes[noteId].taskId}`);
+  getRequestforTaskSearch(pendingTasksEnd);
 }
 
 function updateNote(noteId, title, filterDesc) {
   let description = filterDesc.replaceAll("<br/>", "\r\n");
   updateId = noteId;
+  noteIdAux = noteId;
   isUpdate = true;
   addBox.click();
   titleTag.value = title;
@@ -171,36 +156,63 @@ function getStatus(noteId) {
 
 addBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  let title = titleTag.value.trim();
+  let name = titleTag.value.trim();
 
-  if (title) {
+  if (name) {
     let description = descTag.value.trim(),
       dueDate = dueDateTag.value,
       specifiedTime = specifiedTimeTag.value,
-      category = categoryTag.value,
-      relevance = relevanceTag.value;
-    repeatConfig = RepeatOnConfig;
-    let noteInfo = {
-      title,
-      description,
-      dueDate,
-      specifiedTime,
       category,
-      relevance,
-      repeatConfig,
+      relevance = relevanceTag.value,
+      repeatConfig;
+
+    if(categoryTag.value === '') {
+      category = null;
+    } else {
+      category = categories[categoryTag.value];
+    }
+
+    if(RepeatOnConfig.type === ""){
+      repeatConfig = null;
+    } else {
+      repeatConfig = RepeatOnConfig;
+    }
+      
+    let noteInfo = {
+      taskId: null,
+      name: name,
+      description: description,
+      category: category,
+      relevance: relevance,
+      dueDate: dueDate,
+      specifiedTime: specifiedTime,
+      repeatConfig: repeatConfig,
     };
+    setBlankToNull(noteInfo);
+
     if (!isUpdate) {
-      postRequest(JSON.stringify(noteInfo), createUrl);
-      notes.push(noteInfo);
+      postRequestforTaskCreation(JSON.stringify(noteInfo), "/tasks");
     } else {
       isUpdate = false;
-      notes[updateId] = noteInfo;
+      noteInfo.taskId = notes[noteIdAux].taskId;
+      let temp = noteInfo;
+      temp = {...noteInfo, user: { userId: notes[noteIdAux].user.userId }};
+      putRequestForTask(JSON.stringify(temp), "/tasks");
+      
     }
     localStorage.setItem("notes", JSON.stringify(notes));
     showNotes();
     closeIcon.click();
   }
 });
+
+function setBlankToNull(obj) {
+  Object.keys(obj).forEach(function (index) {
+    if (obj[index] === "") {
+      obj[index] = null;
+    }
+  });
+}
 
 repeatSwitch.addEventListener("click", (e) => {
   repeatSwitch.checked = false;
@@ -233,6 +245,8 @@ repeatButton.addEventListener("click", (e) => {
 categoryBtn.addEventListener("click", (e) => {
   categoryBox.classList.add("show");
   categoryCard.classList.add("show");
+  categoryCardsList.innerHTML = "";
+  refreshCategoryManager();
 });
 
 categoryExitIcon.addEventListener("click", () => {
@@ -245,60 +259,39 @@ categoryExitIcon.addEventListener("click", () => {
 const searchTask = (event) => {
   categoryBox.classList.add("show");
   searchBox.classList.add("show");
-}
+};
 
 searchTaskBtn.addEventListener("click", searchTask);
 
-
-function endPointGenerator() {
+function endPointTaskQueryGenerator() {
   let allSelectSearchForm = searchForm.querySelectorAll(".row > select");
-  let result = "";
+  let result = "/tasks?";
   allSelectSearchForm.forEach((element) => {
-    
-    if(element.value !== "ALL") {
-      if(element.name !== "status") result += "&";
-      result += `${element.name}=${element.value}`
-    } 
+    if (element.value !== "all") {
+      if (element.value !== "status" && element.value !== "pending") result += "&";
+      result += `${element.name}=${element.value}`;
+    }
   });
-  console.log(result.toLowerCase());
+  console.log(result);
+  return result;
 }
 
-async function tasksRequests(jsonData, endPoint) {
-  notes = await postRequestv2(jsonData, endPoint);
-  showNotes();
-}
-
-searchTaskBtn.addEventListener("click", (e) => {
+searchTaskButton.addEventListener("click", (e) => {
   e.preventDefault();
-  tasksRequests("", endPointGenerator());
-  
+  getRequestforTaskSearch(endPointTaskQueryGenerator());
 });
 
 /*Category HTTP Request*/
 
 const createCategory = (evento) => {
   evento.preventDefault();
+  let category = {
+    name: ""
+  };
   const input = document.querySelector("[data-form-input]");
-  const value = input.value.trim();
-  if (value !== "") {
-    const list = document.querySelector("[data-list]");
-    const task = document.createElement("li");
-    task.classList.add("card");
-    input.value = "";
-    //backticks
-    const taskContent = document.createElement("div");
-    taskContent.classList.add("icon__task");
-
-    const titleTask = document.createElement("span");
-    titleTask.classList.add("task");
-    titleTask.innerText = value;
-    taskContent.appendChild(checkComplete());
-    taskContent.appendChild(titleTask);
-    // task.innerHTML = content;
-    task.appendChild(taskContent);
-    task.appendChild(deleteIcon());
-    list.appendChild(task);
-  }
+  category.name = input.value.trim();
+  console.log(category);
+  postNewCategory(JSON.stringify(category), "/categories");
   input.value = "";
 };
 
@@ -308,38 +301,61 @@ async function categoriesRequests(jsonData, endPoint) {
   categories = await postRequestv2(jsonData, endPoint);
 }
 
-function refreshCategoryCreateSelector(){
+function refreshCategoryCreateSelector() {
   categoryListCreate.innerHTML = "";
   let option = document.createElement("option");
   option.value = "";
   option.text = "None";
   categoryListCreate.appendChild(option);
-  for (var i = 0; i < categoryArray.length; i++) {
+  for (var i = 0; i < categories.length; i++) {
     option = document.createElement("option");
-    option.value = categoryArray[i];
-    option.text = categoryArray[i];
+    option.value = i;
+    option.text = categories[i].name;
     categoryListCreate.appendChild(option);
   }
 }
 
-function refreshCategorySearchSelector(){
+function refreshCategorySearchSelector() {
   categoryListSearch.innerHTML = "";
   let option = document.createElement("option");
-  option.value = "";
-  option.text = "None";
+  option.value = "all";
+  option.text = "ALL";
   categoryListSearch.appendChild(option);
-  for (var i = 0; i < categoryArray.length; i++) {
+  for (var i = 0; i < categories.length; i++) {
     option = document.createElement("option");
-    option.value = categoryArray[i];
-    option.text = categoryArray[i];
+    option.value = categories[i].categoryId;
+    option.text = categories[i].name;
     categoryListSearch.appendChild(option);
   }
 }
 
+function refreshCategoryManager() {
+  
+  categoryCardsList.innerHTML = "";
+  for(var i = 0; i < categories.length; i++) {
+    const list = document.querySelector("[data-list]");
+    const task = document.createElement("li");
+    task.classList.add("card");
+    //backticks
+    const taskContent = document.createElement("div");
+    taskContent.classList.add("icon__task");
+
+    const titleTask = document.createElement("span");
+    titleTask.classList.add("task");
+    titleTask.innerText = categories[i].name;
+    taskContent.appendChild(checkComplete());
+    taskContent.appendChild(titleTask);
+    // task.innerHTML = content;
+    task.appendChild(taskContent);
+    task.appendChild(deleteIcon());
+    list.appendChild(task);
+
+  }
+}
 taskStatusSearch.addEventListener("change", (e) => {
-  if(taskStatusSearch.value === "COMPLETED"){
+  if (taskStatusSearch.value === "COMPLETED") {
     futureOption.classList.add("hide");
-    if(dueToSearch.value === "FUTURE") {
+    if (dueToSearch.value === "FUTURE") {
       dueToSearch.value = "ALL";
     }
   } else {
@@ -347,13 +363,10 @@ taskStatusSearch.addEventListener("change", (e) => {
   }
 });
 
-
-
 closeTaskIcon.addEventListener("click", () => {
   categoryBox.classList.remove("show");
   searchBox.classList.remove("show");
 });
-
 
 const checkComplete = () => {
   const i = document.createElement("i");
@@ -418,4 +431,137 @@ async function postRequestv2(jsonData, endPoint) {
   }
 }
 
+async function getRequestforTaskSearch(endPoint) {
+  const settings = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    notes = await fetchResponse.json();
+    showNotes();
+  } catch (e) {
+    return e;
+  }
+}
 
+async function postRequestforTaskCreation(noteInfo, endPoint) {
+  const settings = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: noteInfo,
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    note = await fetchResponse.json();
+    notes.push(note);
+    showNotes();
+  } catch (e) {
+    return e;
+  }
+}
+
+async function putRequestForTask(noteInfo, endPoint) {
+  const settings = {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: noteInfo
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    note = await fetchResponse.json();
+    notes[updateId] = note;
+    showNotes();
+  } catch (e) {
+    return e;
+  }
+}
+
+async function deleteRequestForTask(endPoint) {
+  const settings = {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    location.reload();
+  } catch (e) {
+    return e;
+  }
+}
+
+async function getAllCategories(endPoint) {
+  const settings = {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    categories = await fetchResponse.json();
+    refreshCategoryCreateSelector();
+    refreshCategorySearchSelector();
+    
+  } catch (e) {
+    return e;
+  }
+}
+
+async function postNewCategory(categoryInfo, endPoint) {
+  const settings = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+    body: categoryInfo,
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    let newCategory = await fetchResponse.json();
+    categories.push(newCategory);
+    refreshCategoryCreateSelector();
+    refreshCategorySearchSelector();
+    refreshCategoryManager();
+  } catch (e) {
+    return e;
+  }
+}

@@ -81,7 +81,7 @@
                   <div id="category-container" class="row category">
                     <label for="Category">Category</label>
                     <select id="category-field" data-category-create>
-                      <option value="None">NONE</option>
+                      <option value="">NONE</option>
                     </select>
                   </div>
                   <div class="row relevance">
@@ -199,33 +199,32 @@
               <div class="row type">
               <label>Task Status</label>
                 <select data-task-status name="status">
-                  <option name="status" value="PENDING">PENDING</option>
-                  <option name="status" value="COMPLETED">COMPLETED</option>
+                  <option value="pending">PENDING</option>
+                  <option value="completed">COMPLETED</option>
                 </select>
               </div>
               <div class="row number">
                 <label>Due To</label>
                 <select data-due-to name="due">
-                  <option value="ALL">ALL</option>
-                  <option value="TODAY">TODAY</option>
-                  <option value="PREVIOUS">PREVIOUS</option>
-                  <option value="FUTURE" class="dueTo__Data">FUTURE</option>
+                  <option value="all">ALL</option>
+                  <option value="today">TODAY</option>
+                  <option value="previous">PREVIOUS</option>
+                  <option value="future" class="dueTo__Data">FUTURE</option>
                 </select>
               </div>
               <div class="row relevance">
                 <label for="start">Relevance</label>
                 <select data-relevance-search name="rel">
-                  <option value="ALL">ALL</option>
-                  <option value="NONE">NONE</option>
-                  <option value="LOW">LOW</option>
-                  <option value="MEDIUM">MEDIUM</option>
-                  <option value="HIGH">HIGH</option>
+                  <option value="all">ALL</option>
+                  <option value="none">NONE</option>
+                  <option value="low">LOW</option>
+                  <option value="medium">MEDIUM</option>
+                  <option value="high">HIGH</option>
                 </select>
               </div>
               <div class="row category">
                 <label for="start">Category</label>
-                <select data-category-search name="category">
-                  <option value="ALL">ALL</option>
+                <select data-category-search name="categoryId">
                 </select>
               </div>
               <button id="repeat-button" type="submit" data-task-search>Search</button>

@@ -144,6 +144,9 @@ async function postRequest(jsonData, endPoint) {
   }
 
   if(data.message === "Successful Authentication") {
+    localStorage.removeItem('token');
+    let bearerToken = `Bearer ${data.token}`;
+    localStorage.setItem('token', bearerToken);
     window.location.href = taskMenuUrl;
   }
 }
