@@ -32,7 +32,8 @@ const addBox = document.querySelector(".add-box"),
   futureOption = document.querySelector(".dueTo__Data"),
   searchForm = document.getElementById("search-box"),
   searchTaskButton = document.querySelector("[data-task-search]"),
-  categoryCardsList = document.querySelector(".cardsList");
+  categoryCardsList = document.querySelector(".cardsList"),
+  sendReportBtn = document.querySelector("[data-sndrep-btn]");
 
 const pendingTasksEnd = "/tasks?status=pending";
 var token = localStorage.getItem("token");
@@ -142,15 +143,15 @@ function updateNote(noteId, title, filterDesc) {
 }
 
 function setCompleted(noteId) {
-  notes[noteId].isCompleted = !notes[noteId].isCompleted;
+  putStatusOnTask(`/tasks/${notes[noteId].taskId}`);
   showNotes();
 }
 
 function getStatus(noteId) {
-  if (notes[noteId].isCompleted) {
-    completedData = ["uil-times", "Pending"];
+  if (notes[noteId].completedDate === null) {
+    completedData = ["uil-check", "Done"];   
   } else {
-    completedData = ["uil-check", "Done"];
+    completedData = ["uil-times", "Pending"];
   }
 }
 
@@ -279,6 +280,8 @@ function endPointTaskQueryGenerator() {
 searchTaskButton.addEventListener("click", (e) => {
   e.preventDefault();
   getRequestforTaskSearch(endPointTaskQueryGenerator());
+  categoryBox.classList.remove("show");
+  searchBox.classList.remove("show");
 });
 
 /*Category HTTP Request*/
@@ -296,10 +299,6 @@ const createCategory = (evento) => {
 };
 
 createCategoryBtn.addEventListener("click", createCategory);
-
-async function categoriesRequests(jsonData, endPoint) {
-  categories = await postRequestv2(jsonData, endPoint);
-}
 
 function refreshCategoryCreateSelector() {
   categoryListCreate.innerHTML = "";
@@ -335,6 +334,7 @@ function refreshCategoryManager() {
   for(var i = 0; i < categories.length; i++) {
     const list = document.querySelector("[data-list]");
     const task = document.createElement("li");
+    task.value = categories[i].categoryId;
     task.classList.add("card");
     //backticks
     const taskContent = document.createElement("div");
@@ -383,14 +383,22 @@ const completeTask = (event) => {
 const deleteIcon = () => {
   const i = document.createElement("i");
   i.classList.add("uil-trash", "trashIcon", "icon");
-  i.addEventListener("click", deleteTask);
+  i.addEventListener("click", deleteCategory);
   return i;
 };
 
-const deleteTask = (event) => {
+const deleteCategory = (event) => {
   const parent = event.target.parentElement;
-  parent.remove();
+  let categoryId = event.srcElement.parentElement.value;
+  console.log(categoryId);
+  deleteRequestForCategory(`/categories/${categoryId}`,  parent);
+
 };
+
+sendReportBtn.addEventListener("click", () => {
+  getReportRequest("/report");
+});
+
 
 function getRequest(url, endPoint) {
   fetch(`${url}${endPoint}`)
@@ -410,15 +418,13 @@ function getRequest(url, endPoint) {
     });
 }
 
-async function postRequestv2(jsonData, endPoint) {
-  const location = window.location.hostname;
+async function getReportRequest(endPoint) {
   const settings = {
     method: "POST",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: jsonData,
   };
   try {
     const fetchResponse = await fetch(
@@ -498,6 +504,29 @@ async function putRequestForTask(noteInfo, endPoint) {
   }
 }
 
+async function putStatusOnTask(endPoint) {
+  const settings = {
+    method: "PUT",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    location.reload();
+    showNotes();
+  } catch (e) {
+    return e;
+  }
+}
+
+
+
 async function deleteRequestForTask(endPoint) {
   const settings = {
     method: "DELETE",
@@ -561,6 +590,27 @@ async function postNewCategory(categoryInfo, endPoint) {
     refreshCategoryCreateSelector();
     refreshCategorySearchSelector();
     refreshCategoryManager();
+  } catch (e) {
+    return e;
+  }
+}
+
+async function deleteRequestForCategory(endPoint, parent) {
+  const settings = {
+    method: "DELETE",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      Authorization: token,
+    },
+  };
+  try {
+    const fetchResponse = await fetch(
+      `http://localhost:8080${endPoint}`,
+      settings
+    );
+    getAllCategories("/categories");
+    parent.remove();
   } catch (e) {
     return e;
   }
